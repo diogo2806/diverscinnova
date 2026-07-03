@@ -53,6 +53,28 @@ automaticamente a cada push na branch padrão. Para ativar:
 O `assets/tailwind.css` também é versionado, então o `index.html` pode ser
 publicado em qualquer host estático (Netlify, Vercel, S3, etc.) sem etapa de build.
 
+## Deploy no EasyPanel (Docker)
+
+O deploy de produção roda no **EasyPanel**, a partir do `Dockerfile`. Ele usa um
+build multi-stage: compila o Tailwind com Node e serve os arquivos estáticos com
+**nginx** (gzip + cache configurados em `nginx.conf`). A imagem final não contém
+Node nem `node_modules` — apenas nginx e os arquivos do site.
+
+Passos no EasyPanel:
+
+1. Crie um serviço do tipo **App** apontando para este repositório (branch padrão).
+2. Em **Build**, selecione **Dockerfile** (o `Dockerfile` na raiz é detectado
+   automaticamente).
+3. Em **Ports/Proxy**, aponte o proxy para a porta **80** do contêiner.
+4. Configure o domínio e faça o deploy.
+
+Para testar a imagem localmente:
+
+```bash
+docker build -t diverscinnova-site .
+docker run --rm -p 8080:80 diverscinnova-site   # http://localhost:8080
+```
+
 ## Notas
 
 - A fonte **Montserrat** é carregada via Google Fonts (com fallback para

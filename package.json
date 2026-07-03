@@ -1,12 +1,11 @@
 {
-  "name": "diverscinnova-site",
+  "name": "diverscinnova-site-css",
   "version": "1.0.0",
   "private": true,
-  "description": "Landing page institucional da diverSCInnova — Neuro-Analytics & Human Capital.",
+  "description": "Toolchain de CSS (Tailwind) da landing page da diverSCInnova. O servidor é a app Spring Boot (ver pom.xml).",
   "scripts": {
     "build": "tailwindcss -i ./src/input.css -o ./assets/tailwind.css --minify",
-    "watch": "tailwindcss -i ./src/input.css -o ./assets/tailwind.css --watch",
-    "serve": "npx --yes serve -l 8080 ."
+    "watch": "tailwindcss -i ./src/input.css -o ./assets/tailwind.css --watch"
   },
   "devDependencies": {
     "tailwindcss": "3.4.19"

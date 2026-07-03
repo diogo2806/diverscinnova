@@ -404,13 +404,15 @@ Pessoa autista, é a voz por trás da acessibilidade comunicacional e da sensibi
 <div class="max-w-[800px] mx-auto reveal text-center">
 <h2 class="text-4xl md:text-5xl font-black mb-8 uppercase leading-tight" data-i18n="contact_title"><br>Vamos transformar sua gestão de pessoas?</h2>
 <p class="text-slate-400 mb-12 text-lg" data-i18n="contact_subtitle">Deixe a subjetividade para trás e comece a decidir com precisão científica.</p>
-<form class="grid gap-6 text-left">
+<form id="contact-form" class="grid gap-6 text-left" novalidate>
 <div class="grid md:grid-cols-2 gap-6">
-<input type="text" placeholder="Seu Nome" class="p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-violet-500 transition">
-<input type="email" placeholder="E-mail Corporativo" class="p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-violet-500 transition">
+<input type="text" name="name" required placeholder="Seu Nome" class="p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-violet-500 transition">
+<input type="email" name="email" required placeholder="E-mail Corporativo" class="p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-violet-500 transition">
 </div>
-<textarea placeholder="Como podemos ajudar sua organização hoje?" class="p-5 bg-white/5 border border-white/10 rounded-2xl h-32 outline-none focus:border-violet-500 transition"></textarea>
-<button type="submit" class="bg-violet-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-violet-700 transition shadow-2xl" data-i18n="contact_btn">Agendar Demonstração</button>
+<textarea name="message" required placeholder="Como podemos ajudar sua organização hoje?" class="p-5 bg-white/5 border border-white/10 rounded-2xl h-32 outline-none focus:border-violet-500 transition"></textarea>
+<input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden">
+<button type="submit" class="bg-violet-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-violet-700 transition shadow-2xl disabled:opacity-60 disabled:cursor-not-allowed" data-i18n="contact_btn">Agendar Demonstração</button>
+<p id="contact-status" class="text-sm font-bold" role="status" aria-live="polite"></p>
 </form>
 </div>
 </section>
@@ -453,7 +455,8 @@ team_title: "Time diverSCInnova", team_subtitle: "Pessoas diversas, propósito �
 team_diogo: "Desenvolvedor sênior e arquiteto fullstack com olhar apurado para eficiência e segurança. Pessoa com visão monocular, responsável pela otimização, arquitetura e segurança do AIA.",
 team_emma: "Psicóloga e pesquisadora em inteligência humana, com 17 anos de atuação em Recursos Humanos. Autora do AIA e líder da diverSCInnova, conecta ciência, propósito e gestão para reinventar o futuro da inclusão.",
 team_felipe: "Copywriter e estrategista criativo, há mais de 5 anos traduz ideias em impacto. Pessoa autista, é a voz por trás da acessibilidade comunicacional e da sensibilidade que move a marca.",
-contact_title: "Vamos transformar sua gestão de pessoas?", contact_subtitle: "Deixe a subjetividade para trás e comece a decidir com precisão científica.", contact_btn: "Agendar Demonstração"
+contact_title: "Vamos transformar sua gestão de pessoas?", contact_subtitle: "Deixe a subjetividade para trás e comece a decidir com precisão científica.", contact_btn: "Agendar Demonstração",
+contact_sending: "Enviando…", contact_success: "Mensagem enviada! Em breve entraremos em contato.", contact_invalid: "Preencha nome, um e-mail válido e a mensagem.", contact_error: "Não foi possível enviar agora. Tente novamente ou escreva para contato@diverscinnova.com."
 },
 en: {
 contrast: "HIGH CONTRAST", font_size: "FONT:",
@@ -485,11 +488,15 @@ team_title: "diverSCInnova Team", team_subtitle: "Diverse people, single purpose
 team_diogo: "Senior developer and fullstack architect with a keen eye for efficiency and security. A person with monocular vision, responsible for AIA's optimization, architecture, and security.",
 team_emma: "Psychologist and human intelligence researcher with 17 years in HR. AIA's author and diverSCInnova leader, connecting science, purpose, and management to reinvent the future of inclusion.",
 team_felipe: "Copywriter and creative strategist, translating ideas into impact for over 5 years. An autistic person, he is the voice behind communication accessibility and the brand's sensitivity.",
-contact_title: "Shall we transform your HR management?", contact_subtitle: "Leave subjectivity behind and start deciding with scientific precision.", contact_btn: "Schedule a Demo"
+contact_title: "Shall we transform your HR management?", contact_subtitle: "Leave subjectivity behind and start deciding with scientific precision.", contact_btn: "Schedule a Demo",
+contact_sending: "Sending…", contact_success: "Message sent! We'll be in touch soon.", contact_invalid: "Please fill in your name, a valid email and a message.", contact_error: "We couldn't send it right now. Please try again or email contato@diverscinnova.com."
 }
 };
 
+let currentLang = 'pt';
+
 function switchLanguage(lang) {
+currentLang = lang;
 document.querySelectorAll('[data-i18n]').forEach(el => {
 const key = el.getAttribute('data-i18n');
 if (translations[lang][key]) el.innerText = translations[lang][key];
@@ -560,12 +567,58 @@ function initCounters() {
     counters.forEach(c => observer.observe(c));
 }
 
+// FORMULÁRIO DE CONTATO
+function setupContactForm() {
+const form = document.getElementById('contact-form');
+if (!form) return;
+const status = document.getElementById('contact-status');
+const btn = form.querySelector('button[type="submit"]');
+const t = (key) => (translations[currentLang] && translations[currentLang][key]) || translations.pt[key];
+const setStatus = (key, colorClass) => {
+if (!status) return;
+status.textContent = t(key);
+status.className = 'text-sm font-bold ' + colorClass;
+};
+form.addEventListener('submit', async (e) => {
+e.preventDefault();
+const data = Object.fromEntries(new FormData(form).entries());
+// Validação básica no cliente (o servidor revalida)
+const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((data.email || '').trim());
+if (!(data.name || '').trim() || !(data.message || '').trim() || !emailOk) {
+setStatus('contact_invalid', 'text-red-400');
+return;
+}
+const originalLabel = btn ? btn.textContent : '';
+if (btn) { btn.disabled = true; btn.textContent = t('contact_sending'); }
+setStatus('contact_sending', 'text-slate-300');
+try {
+const resp = await fetch('/api/contato', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify(data)
+});
+const json = await resp.json().catch(() => ({}));
+if (resp.ok && json.ok) {
+form.reset();
+setStatus('contact_success', 'text-emerald-400');
+} else {
+setStatus(resp.status === 400 ? 'contact_invalid' : 'contact_error', 'text-red-400');
+}
+} catch (err) {
+setStatus('contact_error', 'text-red-400');
+} finally {
+if (btn) { btn.disabled = false; btn.textContent = originalLabel; }
+}
+});
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 initReveal();
 initCounters();
 setupCarousel('narrative-carousel', 5000);
 setupCarousel('talento-carousel', 5000);
 setupCarousel('lideranca-carousel', 6000);
+setupContactForm();
 });
 </script>
 </body>

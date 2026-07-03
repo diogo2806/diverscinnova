@@ -1,31 +1,35 @@
-# --- Build stage: compile Tailwind CSS ---
-FROM node:20-alpine AS build
-WORKDIR /app
-
-# Install dependencies first (better layer caching)
+# --- Stage 1: compile Tailwind CSS ---
+FROM node:20-alpine AS css
+WORKDIR /web
 COPY package.json package-lock.json ./
 RUN npm ci
-
-# Copy the sources Tailwind needs to scan, then build the stylesheet
 COPY tailwind.config.js ./
-COPY src ./src
+COPY src/input.css ./src/input.css
 COPY index.html ./
 RUN npm run build
 
-# --- Runtime stage: serve the static site with nginx ---
-FROM nginx:1.27-alpine AS runtime
+# --- Stage 2: build the Spring Boot jar ---
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /app
+# Resolve dependencies first for better layer caching
+COPY pom.xml ./
+RUN mvn -q -B dependency:go-offline
+# App sources + static site (index.html at root, CSS from stage 1)
+COPY src ./src
+COPY index.html ./index.html
+COPY --from=css /web/assets ./assets
+RUN mvn -q -B clean package -DskipTests
 
-# Site configuration (gzip, cache headers)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Static assets
-COPY index.html /usr/share/nginx/html/index.html
-COPY --from=build /app/assets /usr/share/nginx/html/assets
+# --- Stage 3: runtime ---
+FROM eclipse-temurin:21-jre-alpine AS runtime
+WORKDIR /app
+ENV JAVA_OPTS=""
+COPY --from=build /app/target/diverscinnova-site.jar app.jar
 
 # EasyPanel proxies to this port
-EXPOSE 80
+EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget -q --spider http://localhost:80/ || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=25s --retries=3 \
+  CMD wget -q --spider http://localhost:8080/ || exit 1
 
-# nginx:alpine already runs `nginx -g 'daemon off;'` by default
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

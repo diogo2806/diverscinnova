@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>diverSCInnova | Neuro-Analytics & Human Capital</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+--brand-violet: #6d28d9;
+--brand-violet-light: #a78bfa;
+}
+body {
+font-family: 'Montserrat', sans-serif;
+scroll-behavior: smooth;
+transition: background-color 0.3s ease;
+}
+
+/* Estilo da Foto do Time */
+.team-photo {
+filter: grayscale(100%);
+transition: filter 0.5s ease, transform 0.3s ease;
+}
+.team-photo:hover {
+filter: grayscale(0%);
+transform: scale(1.05);
+}
+
+/* Hero Background */
+.hero-bg {
+background-image: url('https://diverscinnova.com/wp-content/uploads/2025/10/Design-sem-nome-5.png');
+background-repeat: no-repeat;
+background-size: contain;
+background-position: 95% bottom;
+opacity: 0.12;
+z-index: 0;
+}
+
+/* Animações de Revelação */
+.reveal {
+opacity: 0;
+transform: translateY(30px);
+transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.reveal.active {
+opacity: 1;
+transform: translateY(0);
+}
+
+.no-js .reveal { opacity: 1; transform: translateY(0); }
+
+/* Carrossel de Frases e Depoimentos */
+.carousel-item { display: none; }
+.carousel-item.active { display: block; animation: fadeIn 0.8s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Modo Acessibilidade */
+.contrast-mode { background-color: #000 !important; color: #fff !important; }
+.contrast-mode section, .contrast-mode div, .contrast-mode header { background-color: #000 !important; border-color: #333 !important; }
+.contrast-mode h1, .contrast-mode h2, .contrast-mode h3, .contrast-mode p, .contrast-mode li, .contrast-mode span { color: #fff !important; }
+.contrast-mode .bg-slate-50, .contrast-mode .bg-white { background-color: #111 !important; }
+</style>
+</head>
+<body class="bg-white text-slate-900">
+
+<div class="bg-slate-900 text-white py-2 px-6 flex justify-between items-center text-[10px] font-bold tracking-widest sticky top-0 z-[100]">
+<div class="flex space-x-6">
+<button onclick="toggleContrast()" class="hover:text-violet-400">🌓 <span data-i18n="contrast">ALTO CONTRASTE</span></button>
+<div class="flex items-center space-x-2">
+<span data-i18n="font_size">FONTE:</span>
+<button onclick="changeFontSize('small')" class="px-2 border border-white/20 rounded">A-</button>
+<button onclick="changeFontSize('base')" class="px-2 border border-white/20 rounded">A</button>
+<button onclick="changeFontSize('large')" class="px-2 border border-white/20 rounded">A+</button>
+</div>
+</div>
+<div class="flex space-x-4">
+<button onclick="switchLanguage('pt')" id="btn-pt" class="text-violet-400 font-black">PT</button>
+<button onclick="switchLanguage('en')" id="btn-en" class="hover:text-violet-400">EN</button>
+</div>
+</div>
+
+<style>
+/* Configuração para Desktop */
+.logo-main {
+height: 70px !important;
+width: auto !important;
+object-fit: contain;
+}
+.logo-selo {
+height: 81px !important;
+width: auto !important;
+object-fit: contain;
+}
+.divisor-vertical {
+width: 1px;
+height: 35px;
+background-color: #e2e8f0;
+}
+.container-logos-flex {
+display: flex;
+align-items: center;
+gap: 25px;
+}
+
+/* Ajuste automático para Mobile */
+@media (max-width: 768px) {
+.logo-main { height: 35px !important; }
+.logo-selo { height: 40px !important; }
+.divisor-vertical { height: 20px; }
+.container-logos-flex { gap: 10px; }
+.header-responsivo { padding-left: 15px !important; padding-right: 15px !important; }
+}
+</style>
+
+<header class="header-responsivo bg-white/80 backdrop-blur-md sticky top-10 z-50 mx-auto max-w-[1400px] mt-4 rounded-full shadow-sm border border-slate-100 px-8 py-3">
+<nav class="flex justify-between items-center">
+
+<div class="container-logos-flex">
+<a href="#home" style="display: flex; align-items: center;">
+<img src="https://diverscinnova.com/wp-content/uploads/2024/08/logo-9.png" alt="Logo" class="logo-main">
+</a>
+<div class="divisor-vertical"></div>
+<img src="https://diverscinnova.com/wp-content/uploads/2026/05/selo-negocio-de-impacto.png" alt="Selo Negócio de Impacto" class="logo-selo">
+</div>
+
+<div class="hidden lg:flex space-x-6 text-[10px] font-extrabold uppercase tracking-widest text-slate-500">
+<a href="#home" class="hover:text-violet-600 transition" data-i18n="nav_home">Home</a>
+<a href="#premios" class="hover:text-violet-600 transition" data-i18n="nav_awards">Prêmios</a>
+<a href="#proposito" class="hover:text-violet-600 transition" data-i18n="nav_purpose">O que, Como & Porque</a>
+<a href="#solucoes" class="hover:text-violet-600 transition" data-i18n="nav_solutions">Soluções</a>
+<a href="#depoimentos" class="hover:text-violet-600 transition" data-i18n="nav_testimonials">O que falam do AIA</a>
+<a href="#impacto" class="hover:text-violet-600 transition" data-i18n="nav_impact">Impacto</a>
+<a href="#time" class="hover:text-violet-600 transition" data-i18n="nav_team">Nosso Time</a>
+</div>
+
+<a href="#contato" class="bg-violet-600 text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-violet-700 transition" data-i18n="nav_contact">
+Fale com a gente
+</a>
+</nav>
+</header>
+
+<main>
+<section id="home" class="min-h-[70vh] flex flex-col justify-center items-center px-8 relative overflow-hidden">
+<div class="max-w-5xl text-center z-10">
+<h1 class="text-5xl md:text-7xl font-black leading-tight mb-8 text-slate-900">
+<span data-i18n="hero_title_1">Inteligência e Cultura como você</span> <br>
+<span data-i18n="hero_title_2">nunca soube avaliar…</span> <br>
+<span class="text-violet-600" data-i18n="hero_title_3">até agora.</span>
+</h1>
+</div>
+<div class="absolute inset-0 hero-bg"></div>
+</section>
+
+<section class="py-24 bg-slate-50 px-8">
+<div class="max-w-5xl mx-auto text-center">
+<div id="narrative-carousel">
+<div class="carousel-item active">
+<p class="text-2xl md:text-4xl text-slate-900 font-medium leading-relaxed" data-i18n="slide_1">Você já parou para pensar que, em um planeta com 8 bilhões de pessoas, não existem dois cérebros exatamente iguais?</p>
+</div>
+<div class="carousel-item">
+<p class="text-2xl md:text-4xl text-slate-900 font-medium leading-relaxed" data-i18n="slide_2">O que nos torna humanos não é a nossa semelhança, mas as nossas particularidades.</p>
+</div>
+<div class="carousel-item">
+<p class="text-2xl md:text-4xl text-slate-900 font-medium leading-relaxed" data-i18n="slide_3">Nossa forma única de processar o mundo, de resolver problemas e de criar conexões.</p>
+</div>
+<div class="carousel-item">
+<h2 class="text-2xl md:text-4xl font-normal text-slate-900 leading-tight">
+<span data-i18n="slide_4">Na <b>diverSCInnova</b>, nós acreditamos que a eficiência da Gestão de Pessoas não está na padronização, mas na decodificação dessa assinatura única.</span>
+</h2>
+</div>
+</div>
+</div>
+</section>
+
+<section class="py-32 px-8 bg-white overflow-hidden">
+<div class="max-w-[1200px] mx-auto grid md:grid-cols-2 gap-16 items-center reveal">
+<div class="order-2 md:order-1">
+<h2 class="text-4xl sm:text-5xl md:text-6xl font-black mb-8 text-slate-900 leading-tight" data-i18n="hub_title">Hub de Neuro-analytics</h2>
+<p class="text-lg text-slate-600 mb-6 leading-relaxed" data-i18n="hub_text_1">No nosso Hub de Neuro-analytics utilizamos IA e Big Data para decodificar assinaturas neurais e transformá-las em potência para seleção, desenvolvimento e otimização da cultura organizacional.</p>
+<p class="text-lg text-slate-600 mb-10 italic font-bold border-l-4 border-violet-600 pl-6" data-i18n="hub_text_2">Transformamos subjetividade em indicadores científicos para corrigir distorções humanas na tomada de decisão.</p>
+<a href="#solucoes" class="inline-block bg-violet-600 text-white px-8 py-4 rounded-full text-xs font-black uppercase tracking-widest hover:bg-violet-700 transition" data-i18n="hub_btn">Descobrir Soluções</a>
+</div>
+<div class="rounded-[3rem] overflow-hidden shadow-2xl order-1 md:order-2 h-[300px] md:h-auto">
+<img src="https://diverscinnova.com/wp-content/uploads/2025/10/cerebro-fundo.png" alt="Neuro-Analytics" class="w-full h-full object-cover">
+</div>
+</div>
+</section>
+
+<section id="premios" class="py-20 bg-slate-50 border-y border-slate-100 px-8">
+<div class="max-w-[1100px] mx-auto text-center">
+<h3 class="text-[13px] font-black uppercase tracking-[0.3em] text-slate-500 mb-16" data-i18n="awards_title">
+Premiada e Acelerada por Instituições de Referência
+</h3>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 items-start reveal">
+<a href="https://www.instagram.com/p/C-ve5L4PebL/" target="_blank" rel="noopener noreferrer" class="group flex flex-col items-center">
+<div class="h-12 flex items-center justify-center mb-5">
+<img src="https://diverscinnova.com/wp-content/uploads/2025/10/br-criativo.png" alt="Prêmio Brasil Criativo" class="max-h-full w-auto grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 opacity-60 group-hover:opacity-100">
+</div>
+<span class="text-slate-800 font-bold text-[10px] uppercase tracking-wider leading-tight">Prêmio Brasil Criativo 2024</span>
+<span class="text-slate-400 text-[9px] font-medium mt-1 uppercase tracking-widest" data-i18n="award_1_cat">Tecnologias Acessíveis</span>
+</a>
+<a href="http://mg.asndev.com.br/cultura-empreendedora/empreendedora-mineira-cria-mapeamento-de-habilidades-para-promover-a-inclusao-nas-empresas/" target="_blank" rel="noopener noreferrer" class="group flex flex-col items-center">
+<div class="h-12 flex items-center justify-center mb-5">
+<img src="https://diverscinnova.com/wp-content/uploads/2025/10/sebrae-delas.png" alt="Prêmio Sebrae" class="max-h-full w-auto grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 opacity-60 group-hover:opacity-100">
+</div>
+<span class="text-slate-800 font-bold text-[10px] uppercase tracking-wider leading-tight">Prêmio Sebrae Mulher de Negócios</span>
+<span class="text-slate-400 text-[9px] font-medium mt-1 uppercase tracking-widest" data-i18n="award_2_cat">Ciência e Tecnologia</span>
+</a>
+<a href="https://www.instagram.com/p/DNEJTDBytYQ/" target="_blank" rel="noopener noreferrer" class="group flex flex-col items-center">
+<div class="h-12 flex items-center justify-center mb-5">
+<img src="https://diverscinnova.com/wp-content/uploads/2025/10/ambev-voa.png" alt="Ambev VOA" class="max-h-full w-auto grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 opacity-60 group-hover:opacity-100">
+</div>
+<span class="text-slate-800 font-bold text-[10px] uppercase tracking-wider leading-tight">Ambev VOA 2025</span>
+<span class="text-slate-400 text-[9px] font-medium mt-1 uppercase tracking-widest" data-i18n="award_3_cat">Aceleração</span>
+</a>
+<a href="https://www.linkedin.com/posts/koinzcapital_..." target="_blank" rel="noopener noreferrer" class="group flex flex-col items-center">
+<div class="h-12 flex items-center justify-center mb-5">
+<img src="https://diverscinnova.com/wp-content/uploads/2025/10/koinzcapital_logo.jpg" alt="Koinz Capital" class="max-h-full w-auto grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 opacity-60 group-hover:opacity-100 rounded-xl shadow-sm">
+</div>
+<span class="text-slate-800 font-bold text-[10px] uppercase tracking-wider leading-tight">Koinz Capital Batch 2.2025</span>
+<span class="text-slate-400 text-[9px] font-medium mt-1 uppercase tracking-widest" data-i18n="award_4_cat">Investimento</span>
+</a>
+</div>
+</div>
+</section>
+
+<section id="proposito" class="py-32 px-8 bg-white">
+<div class="max-w-[1200px] mx-auto text-center mb-24 reveal">
+<h2 class="text-3xl md:text-5xl font-black mb-8 text-slate-900 leading-tight" data-i18n="purpose_title">Não somos apenas uma startup de DE&I.</h2>
+<p class="max-w-4xl mx-auto text-xl text-slate-600 leading-relaxed" data-i18n="purpose_text">
+Resolvemos o maior gargalo do RH moderno: a subjetividade nas decisões de pessoas.
+Mapeamos o potencial humano onde os métodos tradicionais falham, garantindo que o talento seja o único critério de sucesso.
+</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+<div class="bg-slate-50 p-12 rounded-[2.5rem] reveal border border-slate-100">
+<div class="text-4xl font-black text-violet-600 mb-6">01</div>
+<h3 class="text-xl font-black mb-4" data-i18n="pill_1_title">Engenharia de Gamificação</h3>
+<p class="text-slate-600 text-sm leading-relaxed" data-i18n="pill_1_text">Engajamento imersivo que isola a performance cognitiva do cansaço de treinamentos e avaliações tradicionais.</p>
+</div>
+<div class="bg-slate-50 p-12 rounded-[2.5rem] reveal border border-slate-100">
+<div class="text-4xl font-black text-violet-600 mb-6">02</div>
+<h3 class="text-xl font-black mb-4" data-i18n="pill_2_title">Protocolo de Acessibilidade Universal</h3>
+<p class="text-slate-600 text-sm leading-relaxed" data-i18n="pill_2_text">Softwares com acessibilidade desde a base - nada de adaptações.
+Garantia de equidade para pessoas de diferentes grupos de minoria.</p>
+</div>
+<div class="bg-slate-50 p-12 rounded-[2.5rem] reveal border border-slate-100">
+<div class="text-4xl font-black text-violet-600 mb-6">03</div>
+<h3 class="text-xl font-black mb-4" data-i18n="pill_3_title">Neurociência Aplicada</h3>
+<p class="text-slate-600 text-sm leading-relaxed" data-i18n="pill_3_text">Rigor científico desde a Fundamentação Teórico-Científica das soluções até a análise de dados e tratamento de Big Data.</p>
+</div>
+</div>
+</section>
+
+<section id="solucoes" class="py-32 px-8 bg-slate-50">
+<div class="max-w-[1200px] mx-auto text-center mb-20 reveal">
+<h2 class="text-4xl md:text-6xl font-black mb-4" data-i18n="solutions_main_title">Nosso Ecossistema de Soluções</h2>
+<p class="text-violet-600 font-bold uppercase tracking-widest text-sm italic" data-i18n="solutions_subtitle">Precisão que transforma.</p>
+</div>
+
+<div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+<div class="bg-white p-12 rounded-[3rem] shadow-xl reveal flex flex-col justify-between">
+<div>
+<div class="h-16 w-full flex items-center justify-start mb-6">
+<img src="https://diverscinnova.com/wp-content/uploads/2025/10/New-Logo-AIA.png" alt="Logo AIA" style="height: 38px; width: auto; object-fit: contain; object-position: left center;">
+</div>
+<h3 class="text-3xl font-black mb-4 text-left" data-i18n="sol_1_focus">Foco: o indivíduo</h3>
+<p class="text-slate-600 text-lg mb-8 text-left" data-i18n="sol_1_text">Mapeamento individual de inteligência fluida. O primeiro assessment do mundo com acessibilidade universal nativa.</p>
+<ul class="space-y-4 mb-12 text-xs font-bold uppercase tracking-widest text-violet-600 flex flex-col items-start">
+<li data-i18n="sol_1_li1">• 8 Construtos Cognitivos</li>
+<li data-i18n="sol_1_li2">• Zero Viés de Currículo</li>
+<li data-i18n="sol_1_li3">• Insights Acionáveis</li>
+</ul>
+</div>
+<a href="#" class="inline-block w-full text-center bg-violet-600 text-white py-4 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-violet-700 transition" data-i18n="sol_1_btn">CONHECER O AIA →</a>
+</div>
+
+<div class="bg-slate-900 text-white p-12 rounded-[3rem] shadow-2xl reveal flex flex-col justify-between">
+<div>
+<div class="h-16 w-full flex items-center justify-start mb-6">
+<img src="https://diverscinnova.com/wp-content/uploads/2026/05/logo-AIA-Champions-scaled-e1778270147148.png" alt="Logo AIA Champions" style="height: 48px; width: auto; object-fit: contain; object-position: left center;">
+</div>
+<h3 class="text-3xl font-black mb-4 text-left" data-i18n="sol_2_focus">Foco: o coletivo</h3>
+<p class="text-slate-400 text-lg mb-8 text-left" data-i18n="sol_2_text">Engenharia cultural e treinamento gamificado para mapeamento de vieses coletivos e consciência situacional.</p>
+<ul class="space-y-4 mb-12 text-xs font-bold uppercase tracking-widest text-violet-400 flex flex-col items-start">
+<li data-i18n="sol_2_li1">• Mapeamento de Vieses</li>
+<li data-i18n="sol_2_li2">• Dashboards em Tempo Real</li>
+<li data-i18n="sol_2_li3">• Educação Gamificada</li>
+</ul>
+</div>
+<a href="#" class="inline-block w-full text-center bg-white text-slate-900 py-4 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-slate-200 transition" data-i18n="sol_2_btn">COMO FUNCIONA →</a>
+</div>
+</div>
+</section>
+
+<section id="depoimentos" class="py-32 px-8 bg-white">
+<div class="max-w-[1200px] mx-auto text-center mb-24 reveal">
+<h2 class="text-4xl font-black mb-4 text-slate-900" data-i18n="test_title">O que falam do AIA</h2>
+<p class="text-slate-500 italic uppercase text-[10px] font-bold tracking-widest" data-i18n="test_subtitle">O impacto em dados e vozes.</p>
+</div>
+<div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+<div class="bg-slate-50 p-12 rounded-[3rem] reveal border border-slate-100">
+<h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-violet-600 mb-10" data-i18n="test_cat_1">Experiência do Talento</h4>
+<div id="talento-carousel">
+<div class="carousel-item active">
+<p class="text-lg italic text-slate-700 mb-6" data-i18n="t_quote_1">“Gostei bastante da experiência, achei interessante e diferente de tudo que já vi.”</p>
+<p class="font-bold text-[10px] text-slate-500 uppercase">S.L. / Analista de Logística / Pessoa com deficiência física</p>
+</div>
+<div class="carousel-item">
+<p class="text-lg italic text-slate-700 mb-6" data-i18n="t_quote_2">“A proposta é muito boa, faz a gente pensar de um jeito novo.”</p>
+<p class="font-bold text-[10px] text-slate-500 uppercase">T.A. / Gestor de mídias sociais / Pessoa autista</p>
+</div>
+</div>
+</div>
+<div class="bg-slate-900 text-white p-12 rounded-[3rem] shadow-2xl reveal">
+<h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-violet-400 mb-10" data-i18n="test_cat_2">Validação de Liderança</h4>
+<div id="lideranca-carousel">
+<div class="carousel-item active">
+<p class="text-lg italic mb-6" data-i18n="l_quote_1">“Uma experiência de inovação e avaliação diferenciada que contém uma perspectiva tecnológica e inclusiva, diferenciando-se dos modelos atuais de mercado.”</p>
+<p class="font-bold text-[10px] text-slate-400 uppercase">Priscila Prade / Recrutadora</p>
+</div>
+<div class="carousel-item">
+<p class="text-lg italic mb-6" data-i18n="l_quote_2">“Esse é um passo fundamental para construirmos processos organizacionais mais humanos, acolhedores e verdadeiramente inclusivos. Sem dúvida, trata-se de uma iniciativa extraordinária!”</p>
+<p class="font-bold text-[10px] text-slate-400 uppercase">J.M.A.S / Recrutadora</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="impacto" class="py-24 bg-slate-50 border-y border-slate-100 overflow-hidden px-8">
+    <div class="max-w-[1200px] mx-auto text-center">
+        <h2 class="text-3xl md:text-5xl font-black mb-16 text-slate-900 uppercase tracking-tight" data-i18n="impact_title">Números que nos movem</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
+            <div class="reveal">
+                <div class="text-4xl font-black text-violet-600 mb-2">+<span class="counter" data-target="1">0</span>Bi</div>
+                <p class="text-[10px] font-bold uppercase text-slate-500 tracking-widest" data-i18n="impact_1">Pessoas com deficiência no mundo</p>
+            </div>
+            <div class="reveal">
+                <div class="text-4xl font-black text-violet-600 mb-2"><span class="counter" data-target="23">0</span></div>
+                <p class="text-[10px] font-bold uppercase text-slate-500 tracking-widest" data-i18n="impact_2">Países com Cotas, além do Brasil</p>
+            </div>
+            <div class="reveal">
+                <div class="text-4xl font-black text-violet-600 mb-2"><span class="counter" data-target="76">0</span>%</div>
+                <p class="text-[10px] font-bold uppercase text-slate-500 tracking-widest" data-i18n="impact_3">Empresas usam testes psicológicos</p>
+            </div>
+            <div class="reveal">
+                <div class="text-4xl font-black text-violet-600 mb-2"><span class="counter" data-target="80">0</span>%</div>
+                <p class="text-[10px] font-bold uppercase text-slate-500 tracking-widest" data-i18n="impact_4">Turnover de PcDs no mercado</p>
+            </div>
+            <div class="reveal bg-white p-6 rounded-3xl border border-slate-200">
+                <div class="text-4xl font-black text-violet-600 mb-2"><span class="counter" data-target="0">0</span>%</div>
+                <p class="text-[10px] font-bold uppercase text-slate-900 tracking-widest" data-i18n="impact_5">Acessibilidade antes do AIA</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="time" class="py-32 bg-white px-8">
+<div class="max-w-[1200px] mx-auto">
+<div class="text-center mb-24 reveal">
+<h2 class="text-4xl md:text-5xl font-black text-slate-900" data-i18n="team_title">Time diverSCInnova</h2>
+<p class="text-slate-500 italic mt-4 font-medium" data-i18n="team_subtitle">Pessoas diversas, propósito único.</p>
+</div>
+
+<div class="grid md:grid-cols-3 gap-10">
+<div class="group bg-slate-50 rounded-[2rem] shadow-lg hover:shadow-2xl transition-all duration-500 p-8 reveal border border-slate-100">
+<div class="relative overflow-hidden rounded-2xl mb-6">
+<img src="https://diverscinnova.com/wp-content/uploads/2025/10/WhatsApp-Image-2025-06-06-at-11.51.12-e1761750426583.jpeg" alt="Diogo Santos - CTO" class="w-full h-96 object-cover grayscale opacity-80 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700">
+</div>
+<h4 class="font-black text-2xl text-slate-900 mb-2">Diogo Santos</h4>
+<p class="text-violet-600 font-bold text-[10px] uppercase tracking-widest mb-4">CTO</p>
+<p class="text-slate-600 text-sm leading-relaxed" data-i18n="team_diogo">Desenvolvedor sênior e arquiteto fullstack com olhar apurado para eficiência e segurança.
+Pessoa com visão monocular, responsável pela otimização, arquitetura e segurança do AIA.</p>
+</div>
+<div class="group bg-slate-50 rounded-[2rem] shadow-lg hover:shadow-2xl transition-all duration-500 p-8 reveal border border-slate-100">
+<div class="relative overflow-hidden rounded-2xl mb-6">
+<img src="https://diverscinnova.com/wp-content/uploads/2025/10/2025-Creditos-Jessica-Hanna-5-scaled-e1761750745192.jpg" alt="Emmanuelle Fernandes - CEO" class="w-full h-96 object-cover grayscale opacity-80 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700">
+</div>
+<h4 class="font-black text-2xl text-slate-900 mb-2">Emmanuelle Fernandes</h4>
+<p class="text-violet-600 font-bold text-[10px] uppercase tracking-widest mb-4">CEO</p>
+<p class="text-slate-600 text-sm leading-relaxed" data-i18n="team_emma">Psicóloga e pesquisadora em inteligência humana, com 17 anos de atuação em Recursos Humanos.
+Autora do AIA e líder da diverSCInnova, conecta ciência, propósito e gestão para reinventar o futuro da inclusão.</p>
+</div>
+<div class="group bg-slate-50 rounded-[2rem] shadow-lg hover:shadow-2xl transition-all duration-500 p-8 reveal border border-slate-100">
+<div class="relative overflow-hidden rounded-2xl mb-6">
+<img src="https://diverscinnova.com/wp-content/uploads/2025/10/WhatsApp-Image-2024-10-28-at-17.07.30-e1761750602925.jpeg" alt="Felipe Gruetzmacher - CCO" class="w-full h-96 object-cover grayscale opacity-80 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700">
+</div>
+<h4 class="font-black text-2xl text-slate-900 mb-2">Felipe Gruetzmacher</h4>
+<p class="text-violet-600 font-bold text-[10px] uppercase tracking-widest mb-4">CCO</p>
+<p class="text-slate-600 text-sm leading-relaxed" data-i18n="team_felipe">Copywriter e estrategista criativo, há mais de 5 anos traduz ideias em impacto.
+Pessoa autista, é a voz por trás da acessibilidade comunicacional e da sensibilidade que move a marca.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="contato" class="py-32 px-8 bg-slate-900 text-white">
+<div class="max-w-[800px] mx-auto reveal text-center">
+<h2 class="text-4xl md:text-5xl font-black mb-8 uppercase leading-tight" data-i18n="contact_title"><br>Vamos transformar sua gestão de pessoas?</h2>
+<p class="text-slate-400 mb-12 text-lg" data-i18n="contact_subtitle">Deixe a subjetividade para trás e comece a decidir com precisão científica.</p>
+<form class="grid gap-6 text-left">
+<div class="grid md:grid-cols-2 gap-6">
+<input type="text" placeholder="Seu Nome" class="p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-violet-500 transition">
+<input type="email" placeholder="E-mail Corporativo" class="p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-violet-500 transition">
+</div>
+<textarea placeholder="Como podemos ajudar sua organização hoje?" class="p-5 bg-white/5 border border-white/10 rounded-2xl h-32 outline-none focus:border-violet-500 transition"></textarea>
+<button type="submit" class="bg-violet-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-violet-700 transition shadow-2xl" data-i18n="contact_btn">Agendar Demonstração</button>
+</form>
+</div>
+</section>
+</main>
+
+<footer class="py-20 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.6em]">
+&copy; 2026 diverSCInnova — Diversity and Innovation, Science Based.
+</footer>
+
+<script>
+// LÓGICA DE TRADUÇÃO
+const translations = {
+pt: {
+contrast: "ALTO CONTRASTE", font_size: "FONTE:",
+nav_home: "Home", nav_awards: "Prêmios", nav_purpose: "O que, Como & Porque", nav_solutions: "Soluções", nav_testimonials: "O que falam do AIA", nav_impact: "Impacto", nav_team: "Nosso Time", nav_contact: "Fale com a gente",
+hero_title_1: "Inteligência e Cultura como você", hero_title_2: "nunca soube avaliar…", hero_title_3: "até agora.",
+slide_1: "Você já parou para pensar que, em um planeta com 8 bilhões de pessoas, não existem dois cérebros exatamente iguais?",
+slide_2: "O que nos torna humanos não é a nossa semelhança, mas as nossas particularidades.",
+slide_3: "Nossa forma única de processar o mundo, de resolver problemas e de criar conexões.",
+slide_4: "Na diverSCInnova, nós acreditamos que a eficiência da Gestão de Pessoas não está na padronização, mas na decodificação dessa assinatura única.",
+hub_title: "Hub de Neuro-analytics",
+hub_text_1: "No nosso Hub de Neuro-analytics utilizamos IA e Big Data para decodificar assinaturas neurais e transformá-las em potência para seleção, desenvolvimento e otimização da cultura organizacional.",
+hub_text_2: "Transformamos subjetividade em indicadores científicos para corrigir distorções humanas na tomada de decisão.",
+hub_btn: "Descobrir Soluções",
+awards_title: "Premiada e Acelerada por Instituições de Referência",
+award_1_cat: "Tecnologias Acessíveis", award_2_cat: "Ciência e Tecnologia", award_3_cat: "Aceleração", award_4_cat: "Investimento",
+purpose_title: "Não somos apenas uma startup de DE&I.",
+purpose_text: "Resolvemos o maior gargalo do RH moderno: a subjetividade nas decisões de pessoas. Mapeamos o potencial humano onde os métodos tradicionais falham, garantindo que o talento seja o único critério de sucesso.",
+pill_1_title: "Engenharia de Gamificação", pill_1_text: "Engajamento imersivo que isola a performance cognitiva do cansaço de treinamentos e avaliações tradicionais.",
+pill_2_title: "Protocolo de Acessibilidade Universal", pill_2_text: "Softwares com acessibilidade desde a base - nada de adaptações. Garantia de equidade para pessoas de diferentes grupos de minoria.",
+pill_3_title: "Neurociência Aplicada", pill_3_text: "Rigor científico desde a Fundamentação Teórico-Científica das soluções até a análise de dados e tratamento de Big Data.",
+solutions_main_title: "Nosso Ecossistema de Soluções", solutions_subtitle: "Precisão que transforma.",
+sol_1_focus: "Foco: o indivíduo", sol_1_text: "Mapeamento individual de inteligência fluida. O primeiro assessment do mundo com acessibilidade universal nativa.",
+sol_1_li1: "• 8 Construtos Cognitivos", sol_1_li2: "• Zero Viés de Currículo", sol_1_li3: "• Insights Acionáveis", sol_1_btn: "CONHECER O AIA →",
+sol_2_focus: "Foco: o coletivo", sol_2_text: "Engenharia cultural e treinamento gamificado para mapeamento de vieses coletivos e consciência situacional.",
+sol_2_li1: "• Mapeamento de Vieses", sol_2_li2: "• Dashboards em Tempo Real", sol_2_li3: "• Educação Gamificada", sol_2_btn: "COMO FUNCIONA →",
+test_title: "O que falam do AIA", test_subtitle: "O impacto em dados e vozes.", test_cat_1: "Experiência do Talento", test_cat_2: "Validação de Liderança",
+impact_title: "Números que nos movem", impact_1: "Pessoas com deficiência no mundo", impact_2: "Países com Cotas, além do Brasil", impact_3: "Empresas usam testes psicológicos", impact_4: "Turnover de PcDs no mercado", impact_5: "Acessibilidade antes do AIA",
+team_title: "Time diverSCInnova", team_subtitle: "Pessoas diversas, propósito único.",
+team_diogo: "Desenvolvedor sênior e arquiteto fullstack com olhar apurado para eficiência e segurança. Pessoa com visão monocular, responsável pela otimização, arquitetura e segurança do AIA.",
+team_emma: "Psicóloga e pesquisadora em inteligência humana, com 17 anos de atuação em Recursos Humanos. Autora do AIA e líder da diverSCInnova, conecta ciência, propósito e gestão para reinventar o futuro da inclusão.",
+team_felipe: "Copywriter e estrategista criativo, há mais de 5 anos traduz ideias em impacto. Pessoa autista, é a voz por trás da acessibilidade comunicacional e da sensibilidade que move a marca.",
+contact_title: "Vamos transformar sua gestão de pessoas?", contact_subtitle: "Deixe a subjetividade para trás e comece a decidir com precisão científica.", contact_btn: "Agendar Demonstração"
+},
+en: {
+contrast: "HIGH CONTRAST", font_size: "FONT:",
+nav_home: "Home", nav_awards: "Awards", nav_purpose: "What, How & Why", nav_solutions: "Solutions", nav_testimonials: "Testimonials", nav_impact: "Impact", nav_team: "Our Team", nav_contact: "Contact us",
+hero_title_1: "Intelligence and Culture like you", hero_title_2: "never knew how to evaluate…", hero_title_3: "until now.",
+slide_1: "Have you ever stopped to think that, on a planet with 8 billion people, no two brains are exactly alike?",
+slide_2: "What makes us human is not our similarity, but our unique characteristics.",
+slide_3: "Our unique way of processing the world, solving problems, and creating connections.",
+slide_4: "At diverSCInnova, we believe that HR efficiency is not in standardization, but in decoding this unique signature.",
+hub_title: "Neuro-analytics Hub",
+hub_text_1: "In our Neuro-analytics Hub we use AI and Big Data to decode neural signatures and transform them into power for selection, development and optimization of organizational culture.",
+hub_text_2: "We transform subjectivity into scientific indicators to correct human distortions in decision making.",
+hub_btn: "Discover Solutions",
+awards_title: "Awarded and Accelerated by Reference Institutions",
+award_1_cat: "Accessible Tech", award_2_cat: "Science & Tech", award_3_cat: "Acceleration", award_4_cat: "Investment",
+purpose_title: "We are not just another DE&I startup.",
+purpose_text: "We solve modern HR's biggest bottleneck: subjectivity in people decisions. We map human potential where traditional methods fail, ensuring talent is the only success criterion.",
+pill_1_title: "Gamification Engineering", pill_1_text: "Immersive engagement that isolates cognitive performance from the fatigue of traditional training and assessments.",
+pill_2_title: "Universal Accessibility Protocol", pill_2_text: "Software with accessibility from the ground up - no adaptations. Ensuring equity for people from different minority groups.",
+pill_3_title: "Applied Neuroscience", pill_3_text: "Scientific rigor from the Theoretical-Scientific Foundation of solutions to data analysis and Big Data processing.",
+solutions_main_title: "Our Solution Ecosystem", solutions_subtitle: "Precision that transforms.",
+sol_1_focus: "Focus: the individual", sol_1_text: "Individual mapping of fluid intelligence. The world's first assessment with native universal accessibility.",
+sol_1_li1: "• 8 Cognitive Constructs", sol_1_li2: "• Zero Resume Bias", sol_1_li3: "• Actionable Insights", sol_1_btn: "MEET AIA →",
+sol_2_focus: "Focus: the collective", sol_2_text: "Cultural engineering and gamified training for mapping collective biases and situational awareness.",
+sol_2_li1: "• Bias Mapping", sol_2_li2: "• Real-time Dashboards", sol_2_li3: "• Gamified Education", sol_2_btn: "HOW IT WORKS →",
+test_title: "What they say about AIA", test_subtitle: "The impact in data and voices.", test_cat_1: "Talent Experience", test_cat_2: "Leadership Validation",
+impact_title: "Numbers that move us", impact_1: "People with disabilities worldwide", impact_2: "Countries with Quotas, besides Brazil", impact_3: "Companies use psychological tests", impact_4: "PwD Turnover in the market", impact_5: "Accessibility before AIA",
+team_title: "diverSCInnova Team", team_subtitle: "Diverse people, single purpose.",
+team_diogo: "Senior developer and fullstack architect with a keen eye for efficiency and security. A person with monocular vision, responsible for AIA's optimization, architecture, and security.",
+team_emma: "Psychologist and human intelligence researcher with 17 years in HR. AIA's author and diverSCInnova leader, connecting science, purpose, and management to reinvent the future of inclusion.",
+team_felipe: "Copywriter and creative strategist, translating ideas into impact for over 5 years. An autistic person, he is the voice behind communication accessibility and the brand's sensitivity.",
+contact_title: "Shall we transform your HR management?", contact_subtitle: "Leave subjectivity behind and start deciding with scientific precision.", contact_btn: "Schedule a Demo"
+}
+};
+
+function switchLanguage(lang) {
+document.querySelectorAll('[data-i18n]').forEach(el => {
+const key = el.getAttribute('data-i18n');
+if (translations[lang][key]) el.innerText = translations[lang][key];
+});
+// Update buttons
+document.getElementById('btn-pt').classList.toggle('text-violet-400', lang === 'pt');
+document.getElementById('btn-pt').classList.toggle('font-black', lang === 'pt');
+document.getElementById('btn-en').classList.toggle('text-violet-400', lang === 'en');
+document.getElementById('btn-en').classList.toggle('font-black', lang === 'en');
+}
+
+// ACESSIBILIDADE
+function toggleContrast() { document.body.classList.toggle('contrast-mode'); }
+function changeFontSize(size) {
+const b = document.body;
+b.style.fontSize = size === 'small' ? '14px' : size === 'large' ? '20px' : '16px';
+}
+
+// CARROSSÉIS
+function setupCarousel(id, interval) {
+const container = document.getElementById(id);
+if (!container) return;
+const items = container.querySelectorAll('.carousel-item');
+let current = 0;
+setInterval(() => {
+items[current].classList.remove('active');
+current = (current + 1) % items.length;
+items[current].classList.add('active');
+}, interval);
+}
+
+function initReveal() {
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.classList.add('active');
+}
+});
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// LÓGICA DO CONTADOR (PARA A SEÇÃO IMPACTO)
+function initCounters() {
+    const counters = document.querySelectorAll('.counter');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = +entry.target.getAttribute('data-target');
+                if (target === 0) { entry.target.innerText = "0"; return; }
+                const duration = 2000;
+                const increment = target / (duration / 16);
+                let current = 0;
+                const update = () => {
+                    current += increment;
+                    if (current < target) {
+                        entry.target.innerText = Math.ceil(current);
+                        requestAnimationFrame(update);
+                    } else {
+                        entry.target.innerText = target;
+                    }
+                };
+                update();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 1 });
+    counters.forEach(c => observer.observe(c));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+initReveal();
+initCounters();
+setupCarousel('narrative-carousel', 5000);
+setupCarousel('talento-carousel', 5000);
+setupCarousel('lideranca-carousel', 6000);
+});
+</script>
+</body>
+</html>
+
+
+
